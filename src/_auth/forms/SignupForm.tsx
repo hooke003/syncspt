@@ -64,12 +64,8 @@ const SignupForm = () => {
 
       navigate("/");
     } else {
-      toast({ title: "Sign in failed. Please try again.", });
-      
-      return;
+      return toast({ title: "Sign up failed. Please try again.", });
     }
-  } catch (error) {
-    console.log({ error });
   }
 
   return (
