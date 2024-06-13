@@ -68,10 +68,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const cookieFallback = localStorage.getItem("cookieFallback");
+    // cookieFallback === null ||
+      // cookieFallback === undefined
     if (
-      cookieFallback === "[]" ||
-      cookieFallback === null ||
-      cookieFallback === undefined
+      cookieFallback === "[]" // ||
     ) {
       navigate("/sign-in");
     }
@@ -90,5 +90,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
+
+export default AuthProvider;
 
 export const useUserContext = () => useContext(AuthContext);
