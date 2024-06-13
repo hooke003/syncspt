@@ -1,18 +1,18 @@
-import { ID } from "appwrite";
+import { ID, Query } from "appwrite";
 import { INewUser } from "@/types";
 import { account, appwriteConfig, avatars, databases } from "./config";
 
 export async function createUserAccount(user: INewUser): Promise<any> {
   try {
     const newAccount = await account.create(
-        ID.unique(),
-        user.email,
-        user.password,
-        user.name
+      ID.unique(),
+      user.email,
+      user.password,
+      user.name
     );
 
-    if(!newAccount) throw Error;
-    
+    if (!newAccount) throw Error;
+
     const avatarUrl = avatars.getInitials(user.name);
 
     const newUser = await saveUserToDB({
@@ -20,8 +20,8 @@ export async function createUserAccount(user: INewUser): Promise<any> {
       name: newAccount.name,
       email: newAccount.email,
       username: user.username,
-      imageUrl: avatarUrl, 
-    })
+      imageUrl: avatarUrl,
+    });
 
     return newUser;
   } catch (error) {
@@ -39,18 +39,16 @@ export async function saveUserToDB(user: {
 }) {
   try {
     const newUser = await databases.createDocument(
-      appwriteConfig.databaseId, 
+      appwriteConfig.databaseId,
       appwriteConfig.userCollectionId,
       ID.unique(),
-      user,
-    )
+      user
+    );
 
     return newUser;
-    
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-
 }
 
 export async function signInAccount(user: { email: string; password: string }) {
@@ -61,7 +59,17 @@ export async function signInAccount(user: { email: string; password: string }) {
   } catch (error) {
     console.log(error);
   }
-} 
+}
+
+export async function getAccount() {
+  try {
+    const currentAccount = await account.get();
+    return currentAccount;
+  } catch (error) {
+    console.error("Error getting account:", error);
+    return null;
+  }
+}
 
 export async function getCurrentUser() {
   try {
